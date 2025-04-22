@@ -30,10 +30,7 @@ app.engine('liquid', engine.express());
 app.set('views', './views')
 
 
-console.log('Let op: Er zijn nog geen routes. Voeg hier dus eerst jouw GET en POST routes toe.')
-
-// Zie https://expressjs.com/en/5x/api.html#app.get.method over app.get()
-
+//index.liquid
 app.get('/', async function (request, response) {
 
   const stories = await fetch('https://fdnd-agency.directus.app/items/tm_story?fields=*,audio.audio_file,audio.transcript');

@@ -62,6 +62,7 @@
 
 <section class="liked-playlist">
     <h2>Liked playlist</h2>
+    {% if likes.size > 0 %}
     <ul>
         {% for liked in likes %}
         <li class="liked-playlist-story">
@@ -75,6 +76,9 @@
             </form>
         </li>
         {% endfor %}
+        {% else %}
+            <p>Nog geen playlists geliked.</p>
+        {% endif %}
     </ul>
 </section>
 

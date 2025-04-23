@@ -71,8 +71,11 @@
             <a><svg class="play-button" width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.0874 7.06141C10.7817 6.52417 10.7817 5.47595 10.0874 4.93871C7.98914 3.31514 5.6461 2.03543 3.14602 1.14749L2.68929 0.985277C1.8155 0.674939 0.892544 1.26613 0.774251 2.16812C0.443739 4.68826 0.443739 7.31186 0.774251 9.83201C0.892543 10.734 1.8155 11.3252 2.68929 11.0148L3.14602 10.8526C5.6461 9.96469 7.98914 8.68498 10.0874 7.06141Z" fill="white"/></svg></a>
             <p>{{ liked.playlist.playtime }}1 min</p>
 
-            <form action="/{{ liked.id }}/unlike" method="DELETE">
-                <button type="submit">❤️</button>
+            <form action="/{{ liked.id }}/unlike" method="DELETE" data-enhanced="unlike-{{ liked.id }}">
+                <button type="submit">
+                 <span class="btn-text">❤️</span>
+                 <span class="spinner" aria-hidden="true"></span>
+                </button>
             </form>
         </li>
         {% endfor %}
@@ -92,8 +95,11 @@
             <a><svg class="play-button" width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.0874 7.06141C10.7817 6.52417 10.7817 5.47595 10.0874 4.93871C7.98914 3.31514 5.6461 2.03543 3.14602 1.14749L2.68929 0.985277C1.8155 0.674939 0.892544 1.26613 0.774251 2.16812C0.443739 4.68826 0.443739 7.31186 0.774251 9.83201C0.892543 10.734 1.8155 11.3252 2.68929 11.0148L3.14602 10.8526C5.6461 9.96469 7.98914 8.68498 10.0874 7.06141Z" fill="white"/></svg></a>
             <p>{{ playlist.language_id }}</p>
 
-            <form action="/{{ playlist.id }}/like" method="POST">
-                <button type="submit">♡</button>
+            <form action="/{{ playlist.id }}/like" method="POST" data-enhanced="like-{{ playlist.id }}">
+                <button type="submit">
+                  <span class="btn-text">♡</span>
+                  <span class="spinner" aria-hidden="true"></span>
+                </button>
             </form>
         </li>
         {% endfor %}
@@ -101,18 +107,47 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-  const forms = document.querySelectorAll('form');
+  const baseURL = 'https://fdnd-agency.directus.app/items/tm_';
+const defaultProfile = 124;
 
-  forms.forEach(form => {
+// Check of de browser fetch & DOMParser ondersteunt
+if ('fetch' in window && 'DOMParser' in window) {
+  document.addEventListener('submit', async function (event) {
+    const form = event.target;
+
+    // Alleen enhanced formulieren gebruiken
+    if (!form.hasAttribute('data-enhanced')) return;
+
+    event.preventDefault(); // Voorkom standaard gedrag
+
+    // Zoek de knop in het formulier
     const button = form.querySelector('button');
 
-    form.addEventListener('submit', (e) => {
+    if (button) {
+      button.classList.add('loading'); // Voeg loading class toe voor animatie
+    }
 
-      button.classList.add('loading');
+    // Verstuur formulier via fetch
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: new URLSearchParams(new FormData(form)),
     });
+
+    // Verwerk response als tekst
+    const responseText = await response.text();
+
+    // Parse als DOM
+    const parser = new DOMParser();
+    const responseDOM = parser.parseFromString(responseText, 'text/html');
+
+    // Vervang het formulier met de nieuwe versie uit de server-response
+    const newState = responseDOM.querySelector('[data-enhanced="' + form.getAttribute('data-enhanced') + '"]');
+
+    if (newState) {
+      form.outerHTML = newState.outerHTML;
+    }
   });
-});
+}
 </script>
 
 {% render 'partials/footer.liquid' %}

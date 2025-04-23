@@ -41,9 +41,7 @@ app.get('/', async function (request, response) {
   const playlistJSON = await playlist.json();
   const likesJSON = await likes.json();
 
-  ////console.log(storiesJSON)
-  //console.log(playlistJSON)
-  //console.log(likesJSON)
+ 
   // Zie https://expressjs.com/en/5x/api.html#res.render over response.render()
   response.render('index.liquid', { stories: storiesJSON.data, playlists: playlistJSON.data, likes: likesJSON.data })
 })
@@ -58,11 +56,6 @@ app.post('/:playlist/like', async function (request, response) {
   console.log(request.body)
 
   // Via een fetch() naar Directus vullen we nieuwe gegevens in
-
-  // Zie https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch over fetch()
-  // Zie https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify over JSON.stringify()
-  // Zie https://docs.directus.io/reference/items.html#create-an-item over het toevoegen van gegevens in Directus
-  // Zie https://docs.directus.io/reference/items.html#update-an-item over het veranderen van gegevens in Directus
     await fetch(`https://fdnd-agency.directus.app/items/tm_likes`, {
     method: 'POST',
     body: JSON.stringify({
@@ -74,35 +67,20 @@ app.post('/:playlist/like', async function (request, response) {
     }
   });
 
-  // Redirect de gebruiker daarna naar een logische volgende stap
+  
   // Zie https://expressjs.com/en/5x/api.html#res.redirect over response.redirect()
   response.redirect(303, '/')
 })
 
 /*
 app.post('/:id/unlike', async function (request, response) {
-  
-  
-  // In request.body zitten alle formuliervelden die een `name` attribuut hebben in je HTML
-  console.log(request.body)
-
-  // Via een fetch() naar Directus vullen we nieuwe gegevens in
-
-  // Zie https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch over fetch()
-  // Zie https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify over JSON.stringify()
-  // Zie https://docs.directus.io/reference/items.html#create-an-item over het toevoegen van gegevens in Directus
-  // Zie https://docs.directus.io/reference/items.html#update-an-item over het veranderen van gegevens in Directus
-    await fetch(`https://fdnd-agency.directus.app/items/tm_likes/${request.params.id}`, {
-    method: 'DELETE',
-
+  await fetch(`https://fdnd-agency.directus.app/items/tm_likes/${request.params.id}`, {
+    method: 'DELETE'
   });
 
-  // Redirect de gebruiker daarna naar een logische volgende stap
-  // Zie https://expressjs.com/en/5x/api.html#res.redirect over response.redirect()
-  response.redirect(303, '/')
-})
+  response.redirect(303, '/');
+});
 */
-
 
   
 //story unieke slug
@@ -129,7 +107,7 @@ app.use((req, res, next) => {
 
 
 
-// Stel het poortnummer in waar Express op moet gaan luisteren
+
 // Lokaal is dit poort 8000; als deze applicatie ergens gehost wordt, waarschijnlijk poort 80
 app.set('port', process.env.PORT || 8000)
 

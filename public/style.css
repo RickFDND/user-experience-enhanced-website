@@ -210,40 +210,30 @@ body {
                 margin: 0;
             }
 
-            /*loading state
-            .loading::after {
-                margin-left: 5px;
-                animation: spin 1s linear infinite;
-              }
-              
-              @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }*/
-
-              button.loading {
-                position: relative;
-                color: transparent !important; 
-                pointer-events: none;
-              }
-              
-              button.loading::after {
-                content: "";
-                position: absolute;
-                top: 40%;
-                left: 45%;
+            button .spinner {
+                display: none;
+                justify-content: center;
+                align-items: center;
                 width: 16px;
                 height: 16px;
-                margin: -8px 0 0 -8px;
                 border: 2px solid white;
                 border-top-color: transparent;
                 border-radius: 50%;
-                animation: spin 0.8s linear infinite;
+                animation: spin 0.6s linear infinite;
+              }
+              
+              button.loading .btn-text {
+                visibility: hidden;
+              }
+              
+              button.loading .spinner {
+                display: inline-block;
               }
               
               @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
+                to {
+                  transform: rotate(360deg);
+                }
               }
         }
     }

@@ -216,6 +216,7 @@ body {
             }
 
             .loading {
+                position: relative;
                 max-width: 30px;
                 max-height: 30px;
             
@@ -232,16 +233,17 @@ body {
                     svg {
                     display: none;
                   }
-                  
-                  @keyframes spin {
-                    to {
-                      transform: rotate(360deg);
-                    }
-                  }
+            
             }
         }
     }
 }
+
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
 /* Section all-stories*/
 .all-stories {

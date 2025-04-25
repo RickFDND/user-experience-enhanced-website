@@ -72,15 +72,32 @@ app.post('/:playlist/like', async function (request, response) {
   response.redirect(303, '/')
 })
 
-/*
-app.post('/:id/unlike', async function (request, response) {
-  await fetch(`https://fdnd-agency.directus.app/items/tm_likes/${request.params.id}`, {
-    method: 'DELETE'
-  });
 
-  response.redirect(303, '/');
+// POST route om een like te verwijderen van een specifieke playlist door profiel 126
+app.post("/:playlist/unlike", async function (req, res) {
+  const playlistId = req.params.id;
+  const profileId = 126; // hardcoded profiel-ID
+
+  // Zoek of deze gebruiker een like heeft voor deze playlist
+  const likeResponse = await fetch(`https://fdnd-agency.directus.app/items/tm_likes?filter={"profile":${profileId},"playlist":${playlistId}}`);
+  const likeData = await likeResponse.json();
+
+  // Als er minstens één like gevonden is
+  if (likeData.data.length > 0) {
+    const likeId = likeData.data[0].id;
+
+    // Verwijder de like uit Directus
+    await fetch(`https://fdnd-agency.directus.app/items/tm_likes/${likeId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Redirect terug naar homepage of een andere logische route
+  res.redirect(303, "/");
 });
-*/
+
+
+
 
   
 //story unieke slug

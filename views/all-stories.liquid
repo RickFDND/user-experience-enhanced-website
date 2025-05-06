@@ -10,8 +10,8 @@
 </header>
 
 <nav>
-    <form action="">
-        <label for="">
+    <form action="/search">
+        <label for="search">
             <input type="text">
             <span>Search for stories</span>
         </label>
@@ -23,12 +23,12 @@
     </form>
 </nav>
 
-<section class="filter-knoppen">
+<div class="filter-knoppen">
     <button>Animal</button>
     <button>Season</button>
     <button>Language</button>
     <button>Sorting</button>
-</section>
+</div>
 
 <ul>
     {% for story in stories %}

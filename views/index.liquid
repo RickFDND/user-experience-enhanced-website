@@ -167,6 +167,14 @@ if ('fetch' in window && 'DOMParser' in window) {
       // Vervang het oude formulier met de nieuwe HTML
       form.outerHTML = newState.outerHTML;
     }
+
+    if (document.startViewTransition) {
+        document.startViewTransition(function() {
+            form.outerHTML = newState.outerHTML
+        })
+    } else {
+        form.outerHTML = newState.outerHTML
+    }
   });
 }
 </script>

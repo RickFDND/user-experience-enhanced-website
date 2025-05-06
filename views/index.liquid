@@ -29,7 +29,7 @@
     <div class="button-container-languages">
         <button><img src="/IMG/NL.png" alt="Dutch">Dutch</button>
         <button><img src="/IMG/EN.png" alt="English">English</button>
-        <button>Show all</button>
+        <a href="/all-stories">Show all</a>
     </div>
     <ul>
     {% for story in stories %}
@@ -168,6 +168,7 @@ if ('fetch' in window && 'DOMParser' in window) {
       form.outerHTML = newState.outerHTML;
     }
 
+    //workshop clientside scripting UX 
     if (document.startViewTransition) {
         document.startViewTransition(function() {
             form.outerHTML = newState.outerHTML

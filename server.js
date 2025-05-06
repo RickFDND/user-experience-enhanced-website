@@ -78,6 +78,7 @@ app.post("/:id/unlike", async function (req, res) {
 
     // Verwijder de like uit Directus
     await fetch(`https://fdnd-agency.directus.app/items/tm_likes?filter={"profile":126,"id":${req.params.id}}`, {
+      
       method: "DELETE",
 
       headers: {
@@ -90,7 +91,24 @@ app.post("/:id/unlike", async function (req, res) {
   res.redirect(303, "/");
 });
 
+//all-stories pagina
+app.get('/all-stories', async function (request, response) {
 
+  const animal = await fetch('https://fdnd-agency.directus.app/items/tm_animal');
+  const season = await fetch(`https://fdnd-agency.directus.app/items/tm_season`);
+  const language = await fetch('https://fdnd-agency.directus.app/items/tm_language');
+  const stories = await fetch('https://fdnd-agency.directus.app/items/tm_story?fields=*,audio.audio_file,audio.transcript');
+  
+  
+  const animalJSON = await animal.json();
+  const seasonJSON = await season.json();
+  const languageJSON = await language.json();
+  const storiesJSON = await stories.json();
+
+ 
+  // Zie https://expressjs.com/en/5x/api.html#res.render over response.render()
+  response.render('all-stories.liquid', { animal: animalJSON.data, season: seasonJSON.data, language: languageJSON.data, stories: storiesJSON.data })
+})
 
 
   
